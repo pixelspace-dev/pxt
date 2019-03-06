@@ -7,7 +7,7 @@
 @docsTextColor: #505473;
 @docsLineHeight: 1.7;
 @docsPrimaryColorLighter: fadeout(@primaryColor, 95%);
-@docsPrimaryColorLighter2: fadeout(@primaryColor, 90%);
+@docsPrimaryColorHover: fadeout(@primaryColor, 90%);
 
 /* Text color */
 @docsHeadingColor: #1A1C33;
@@ -58,6 +58,7 @@
 .ui.inverted.menu {
     color: black;
     background-color: @primaryColor;
+    margin:0px;
 }
 
 #togglesidebar + div.menu > a{
@@ -212,7 +213,7 @@ height:100%;
     }
 
     .toc a.item:hover{
-        background: @docsPrimaryColorLighter2;
+        background: @docsPrimaryColorHover;
     }
     .toc .inverted a.item {
         color: rgb(0, 0, 0);
@@ -244,6 +245,7 @@ height:100%;
     .ui.inverted.menu {
         color: #1A1C33 !important;
         background-color: @backgroundGrey;
+        margin:0px;
     }
 
     div.menu > a.item{
@@ -288,38 +290,32 @@ height:100%;
     }
 
     a.header:before{
-        content: '';
-        display: inline-block;
-        -webkit-mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-        mask:  data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-        -webkit-mask-size: contain;
-        mask-size: contain;
-        height:17px;  
-        width:17px; 
-        background-color: @primaryColor !important;
-        position: relative;
-        top: 6px;
-        right: 5px;
+        content: "\f078";
+        font-family: Icons;
+        margin-right: 6px;
+        color: @primaryColor;
     }
 
     div.item > div.menu > a.item.active:before{
-        content: '';
-        display: inline-block;
-        -webkit-mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat; 
-        mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-        -webkit-mask-size: contain;
-        mask-size: contain;
-        height:17px;  
-        width:17px; 
-        background-color: @primaryColor !important;
-        position: relative;
-        top: 4px;
-        right: 1px;
+        content: "\f078";
+        font-family: Icons;
+        margin-right: 6px;
+        color: @primaryColor;
         transform: rotate(-90deg);
     }
 
     .header.active + .menu{
         background-color: @docsPrimaryColorLighter;
+    }
+
+    /* Accordion */
+    a[role=treeitem].header:before{
+        content: "";
+    }
+    
+    .ui.accordion .active.title .dropdown.icon{
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
     }
     
 }
@@ -353,7 +349,7 @@ height:100%;
 
         a.item:hover{
         text-decoration: underline;
-        background: @docsPrimaryColorLighter2;
+        background: @docsPrimaryColorHover;
         }
 
         div.item{
@@ -386,33 +382,17 @@ height:100%;
     
     
         a.header:before{
-            content: '';
-            display: inline-block;
-            -webkit-mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-            mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            height:17px;  
-            width:17px; 
-            background-color: @primaryColor !important;
-            position: relative;
-            top: 6px;
-            right: 5px;
+            content: "\f078";
+            color: @primaryColor;
+            font-family: Icons;
+            margin-right: 6px;
         }
     
         div.item > div.menu > a.item.active:before{
-            content: '';
-            display: inline-block;
-            -webkit-mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-            mask: data-uri('image/svg+xml;charset=UTF-8', '../docs/static/folder-menu.svg') no-repeat;
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            height:17px;  
-            width:17px; 
-            background-color: @primaryColor !important;
-            position: relative;
-            top: 4px;
-            right: 1px;
+            content: "\f078";
+            color: @primaryColor;
+            font-family: Icons;
+            margin-right: 6px;
             transform: rotate(-90deg);
         }
     
