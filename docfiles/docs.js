@@ -1,3 +1,7 @@
+// Are these constants available somewhere in the configuration?
+const langCookieExpirationDays = 30;
+const pxtLangCookieId = "PXT_LANG";
+
 function handleEnterKey(e) {
     var charCode = (typeof e.which == "number") ? e.which : e.keyCode
     if (charCode === 13 || charCode === 32) { // Enter or Space key
@@ -125,6 +129,49 @@ function setupSidebar() {
     }
 
     scrollActiveHeaderIntoView();
+}
+
+function getCookieLang() {    
+    const cookiePropRegex = new RegExp(`${pxt.Util.escapeForRegex(pxtLangCookieId)}=(.*?)(?:;|$)`)
+    const cookieValue = cookiePropRegex.exec(document.cookie);
+    return cookieValue && cookieValue[1] || null;
+}
+
+function setCookieLang(langId) {
+    if (langId !== getCookieLang()) {
+        pxt.tickEvent(`menu.lang.setcookielang.${langId}`);
+        const expiration = new Date();
+        expiration.setTime(expiration.getTime() + (langCookieExpirationDays * 24 * 60 * 60 * 1000));
+        document.cookie = `${pxtLangCookieId}=${langId}; expires=${expiration.toUTCString()}`;
+    }
+}
+
+function setupLangPicker(){
+
+    $('#langpicker').click(function() { 
+        $('.ui.modal').modal('show'); 
+    });
+
+    $('.closeIcon').click(function() { 
+        $('.ui.modal').modal('hide'); 
+    });
+
+    $('.langoption').click(function(e) {
+        let langId = $(e.currentTarget).data("lang");
+        setCookieLang(langId);
+
+        if (langId !== getCookieLang()) {
+            pxt.tickEvent(`menu.lang.changelang.${langId}`);
+            pxt.winrt.releaseAllDevicesAsync()
+                .then(() => {
+                    location.reload();
+                })
+                .done();
+        } else {
+            pxt.tickEvent(`menu.lang.samelang.${langId}`);
+            $('.ui.modal').modal('hide');
+        }
+    })
 }
 
 function setupSemantic() {
@@ -272,5 +319,6 @@ $(document).ready(function () {
     setupSidebar();
     setupSemantic();
     renderSnippets();
+    setupLangPicker();
     responsiveResize();
 });

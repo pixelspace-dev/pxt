@@ -230,6 +230,73 @@ namespace pxt.docs {
             return injectHtml(templ, mparams, ["ITEMS"])
         }
 
+        /* Language Picker */
+        const allLanguages: pxt.Map<Language> = {
+            "af": { englishName: "Afrikaans", localizedName: "Afrikaans" },
+            "ar": { englishName: "Arabic", localizedName: "العربية" },
+            "bg": { englishName: "Bulgarian", localizedName: "български" },
+            "ca": { englishName: "Catalan", localizedName: "Català" },
+            "cs": { englishName: "Czech", localizedName: "Čeština" },
+            "da": { englishName: "Danish", localizedName: "Dansk" },
+            "de": { englishName: "German", localizedName: "Deutsch" },
+            "el": { englishName: "Greek", localizedName: "Ελληνικά" },
+            "en": { englishName: "English", localizedName: "English" },
+            "es-ES": { englishName: "Spanish (Spain)", localizedName: "Español (España)" },
+            "es-MX": { englishName: "Spanish (Mexico)", localizedName: "Español (México)" },
+            "fi": { englishName: "Finnish", localizedName: "Suomi" },
+            "fr": { englishName: "French", localizedName: "Français" },
+            "fr-CA": { englishName: "French (Canada)", localizedName: "Français (Canada)" },
+            "he": { englishName: "Hebrew", localizedName: "עברית" },
+            "hr": { englishName: "Croatian", localizedName: "Hrvatski" },
+            "hu": { englishName: "Hungarian", localizedName: "Magyar" },
+            "hy-AM": { englishName: "Armenian (Armenia)", localizedName: "Հայերէն (Հայաստան)" },
+            "id": { englishName: "Indonesian", localizedName: "Bahasa Indonesia" },
+            "is": { englishName: "Icelandic", localizedName: "Íslenska" },
+            "it": { englishName: "Italian", localizedName: "Italiano" },
+            "ja": { englishName: "Japanese", localizedName: "日本語" },
+            "ko": { englishName: "Korean", localizedName: "한국어" },
+            "lt": { englishName: "Lithuanian", localizedName: "Lietuvių" },
+            "nl": { englishName: "Dutch", localizedName: "Nederlands" },
+            "no": { englishName: "Norwegian", localizedName: "Norsk" },
+            "pl": { englishName: "Polish", localizedName: "Polski" },
+            "pt-BR": { englishName: "Portuguese (Brazil)", localizedName: "Português (Brasil)" },
+            "pt-PT": { englishName: "Portuguese (Portugal)", localizedName: "Português (Portugal)" },
+            "ro": { englishName: "Romanian", localizedName: "Română" },
+            "ru": { englishName: "Russian", localizedName: "Русский" },
+            "si-LK": { englishName: "Sinhala (Sri Lanka)", localizedName: "සිංහල (ශ්රී ලංකා)" },
+            "sk": { englishName: "Slovak", localizedName: "Slovenčina" },
+            "sl": { englishName: "Slovenian", localizedName: "Slovenski" },
+            "sr": { englishName: "Serbian", localizedName: "Srpski" },
+            "sv-SE": { englishName: "Swedish (Sweden)", localizedName: "Svenska (Sverige)" },
+            "ta": { englishName: "Tamil", localizedName: "தமிழ்" },
+            "tr": { englishName: "Turkish", localizedName: "Türkçe" },
+            "uk": { englishName: "Ukrainian", localizedName: "Українська" },
+            "vi": { englishName: "Vietnamese", localizedName: "Tiếng việt" },
+            "zh-CN": { englishName: "Chinese (Simplified)", localizedName: "简体中文" },
+            "zh-TW": { englishName: "Chinese (Traditional)", localizedName: "繁体中文" },
+        };
+
+        interface Language {
+            englishName: string;
+            localizedName: string;
+        }
+        let availableLocales = theme.selectLanguage && theme.availableLocales && theme.availableLocales.length ?
+            theme.availableLocales : ["en"]
+        
+        let recLang = (code:string) =>{
+            let locale:Language = allLanguages[code]
+            return `<div class="ui card link card-selected langoption" data-lang="${code}" role="link" aria-label="${locale.englishName}" 
+            tabindex="0"><div class="content"><div class="header">${locale.localizedName}</div>
+            <div class="description tall">${locale.englishName}</div></div></div>`
+        }
+
+        params["availableLocales"] = availableLocales.map(e => recLang(e)).join("\n")
+        params["selectLang"] = lf("Select Language");
+        params["crowdin"] = theme.crowdinProject ?
+            `<p><br/><br/><a href="https://crowdin.com/project/${theme.crowdinProject}" 
+            target="_blank" rel="noopener noreferrer" aria-label=${lf("Help us translate")}>${lf("Help us translate")}</a>
+            </p>` : `<p></p>`
+
         params["menu"] = (theme.docMenu || []).map(e => recMenu(e, 0)).join("\n")
         params["TOC"] = TOC.map(e => recTOC(e, 0)).join("\n")
 
@@ -336,7 +403,10 @@ namespace pxt.docs {
             "appstoremeta",
             "sidebarToggle",
             "searchBar1",
-            "searchBar2"
+            "searchBar2",
+            "availableLocales",
+            "crowdin",
+            "selectLang"
         ])
 
         // Normalize any path URL with any version path in the current URL
