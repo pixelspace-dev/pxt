@@ -129,6 +129,74 @@ function setupSidebar() {
     }
 
     scrollActiveHeaderIntoView();
+
+    // $("#filtertoc").on("keyup", function() {
+
+    //     $('.ui.accordion').accordion('open',0);
+    //     // Value typed
+    //     var value = $(this.children[0]).val().toLowerCase().trim();
+
+        
+    //    // $("div.ui.list.menuContainer a").show().filter(function() {
+    //    //     return $(this).text().toLowerCase().trim().indexOf(value) == -1;
+    //    //   }).hide();
+
+    //    $("div.ui.list.menuContainer a").hide().filter(
+    //     function () {
+    //         var matchText = $(this)
+    //             .find('.textFilter-match')
+    //             .text()
+    //             .toLowerCase();
+    //         for (var i=0; i<patterns.length; i++)
+    //             if (matchText.indexOf(patterns[i]) === -1)
+    //                 return false;
+    //         return true;
+    //     }
+    //    ).show();
+        
+        
+
+        
+    //   });
+
+    (function () {
+
+        /* Initialize filter inputs */
+        var defaultText = $('#filtertoc').val();
+        $('.ui.accordion').accordion('open',0);
+        
+        $('#filtertoc')
+            .focus(function (e) {
+                if ($(this).val() === defaultText)
+                    $(this).val('');
+            })
+            .blur(function (e) {
+                if ($(this).val() === '')
+                    $(this).val(defaultText);
+            })
+            .keyup(function (e) {
+                var patterns = $(this).val().toLowerCase().split(' ');
+                if (!patterns.length)
+                    return;
+                $('a.item')
+                    .hide()
+                    .filter(function () {
+                        var matchText = $(this)
+                            .find('a.item')
+                            .text()
+                            .toLowerCase();
+                        for (var i=0; i<patterns.length; i++)
+                            if (matchText.indexOf(patterns[i]) === -1)
+                                return false;
+                        return true;
+                    })
+                    .show();
+            });
+            
+        })();
+        
+
+      
 }
 
 function getCookieLang() {    
